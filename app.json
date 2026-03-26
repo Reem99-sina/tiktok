@@ -38,11 +38,22 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-secure-store",
+      "react-native-video"
+      
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "extra": {
+      "apiUrl": "https://tiktokback-production-0409.up.railway.app/"
     }
   }
 }
