@@ -34,9 +34,8 @@ export const usePostsByidQuery = ({ id }: { id: string }) => {
 
 export const usePostsByUserQuery = ({ id }: { id?: string }) => {
   return useQuery({
-    queryKey: ["posts","user",id],
-    queryFn: async () =>
-      await axios.get(`${apiUrl}post/user/${id}`),
+    queryKey: ["posts", "user", id],
+    queryFn: async () => await axios.get(`${apiUrl}post/user/${id}`),
   });
 };
 
@@ -55,6 +54,9 @@ export const usePostAdd = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: ["posts"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
       });
     },
   });

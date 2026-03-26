@@ -7,7 +7,7 @@ import { handleApiRequest } from "@/utils/apiHandler";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Entypo from "@expo/vector-icons/Entypo";
 import { ResizeMode, Video } from "expo-av";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import {
   Dimensions,
   Modal,
@@ -38,11 +38,6 @@ export default function VideoItem({ post, isVisible }: VideoItemProps) {
   const { data, isLoading, isError } = usePostsByidQuery({ id: post?._id });
   const postById = data?.data?.data;
 
-  useEffect(() => {
-    if (modalVisible) {
-      console.log("Modal is now visible");
-    }
-  }, [modalVisible]);
 
   // Handle loading state
   if (isLoading) {
@@ -66,7 +61,7 @@ export default function VideoItem({ post, isVisible }: VideoItemProps) {
   };
 
   const handleCommentOpen = () => {
-    console.log("Comment button pressed");
+   
     setModalVisible(true);
   };
 

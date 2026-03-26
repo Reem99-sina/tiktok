@@ -39,9 +39,15 @@ export async function resendCodeRequest(data: FormDataResendCode) {
 }
 
 export const useLogin = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: FormDataLogin) =>
       axios.post(`${apiUrl}user/login`, data).then((res) => res.data),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
   });
 };
 
@@ -91,16 +97,28 @@ export const useGetUser = (token: string | null) => {
   });
 };
 
-export const useToggleFollow = ({ id, token }: { id?: string, token?: string|null }) => {
+export const useToggleFollow = ({
+  id,
+  token,
+}: {
+  id?: string;
+  token?: string | null;
+}) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: () =>
-      axios.post(`${apiUrl}user/follow/${id}`,{},{
-         headers: {
-            Authorization: `Bearer ${token}`,
+      axios
+        .post(
+          `${apiUrl}user/follow/${id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-      }).then((res) => res.data),
+        )
+        .then((res) => res.data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: ["user"],

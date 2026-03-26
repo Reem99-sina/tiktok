@@ -10,7 +10,7 @@ import {
 import { OtpInput } from "react-native-otp-entry";
 import { router, useLocalSearchParams } from "expo-router";
 import { FormDataResendCode, FormDataVerify } from "@/types/user";
-import { resendCodeRequest, verifyEmailRequest } from "@/action/user";
+import { useResendCode, useVerifyEmail } from "@/action/user";
 import Button from "@/components/ui/Button";
 import { handleApiRequest } from "@/utils/apiHandler";
 
@@ -18,14 +18,16 @@ export default function VerifyCode() {
   let [code, setCode] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false); // ✅ loading state
   const { email } = useLocalSearchParams<{ email: string }>();
+  const {mutateAsync}=useVerifyEmail()
+  const {mutateAsync: resendCodeMutateAsync}=useResendCode()
 
   const onSubmit = async (data: FormDataVerify) => {
     setIsSubmitting(true); // start loading
     try {
-      const result = await handleApiRequest(() => verifyEmailRequest(data));
+      const result = await handleApiRequest(() => mutateAsync(data));
       if (!result) return;
       // optionally navigate to another screen
-      router.push("/(auth)/login");
+      router.push("/login");
     } catch (err: any) {
       Alert.alert(err.message || "Something went wrong");
     } finally {
@@ -34,7 +36,7 @@ export default function VerifyCode() {
   };
 
   const onResendCodeRequest = async (data: FormDataResendCode) => {
-    const result = await handleApiRequest(() => resendCodeRequest(data));
+    const result = await handleApiRequest(() => resendCodeMutateAsync(data));
     if (!result) return; // error already handled inside helper
 
   };

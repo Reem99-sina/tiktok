@@ -25,19 +25,22 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     OutfitBold: require("../assets/fonts/Outfit-Bold.ttf"),
   });
-  const {  token, loadUserFromToken } = useAuthStore((state) => state);
+  const { token, loadUserFromToken } = useAuthStore((state) => state);
 
   const segments = useSegments();
 
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
-
+    }
+    if (token) {
       loadUserFromToken().then(() => {
         setAppReady(true);
       });
+    } else {
+      setAppReady(true);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loaded, token]);
 
   if (!appReady || !loaded) {

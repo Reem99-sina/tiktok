@@ -58,8 +58,8 @@ export default function RegisterScreen() {
 
     const result = await handleApiRequest(() => registerRequest(formData));
     if (!result) return; // error already handled inside helper
-    router.push(`/(auth)/login`);
-    // router.push(`/(auth)/confirmCode/${data?.email}`);
+    router.push(`/login`);
+    // router.push(`/confirmCode/${data?.email}`);
   };
   return (
     <ThemedView style={styles.container}>
@@ -130,7 +130,7 @@ export default function RegisterScreen() {
         disabled={isSubmitting}
       />
 
-      <TouchableOpacity onPress={() => router.push("/(auth)/login")}>
+      <TouchableOpacity onPress={() => router.push("/login")}>
         <Text style={styles.registerText}>Already have an account? Login</Text>
       </TouchableOpacity>
     </ThemedView>

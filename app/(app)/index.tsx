@@ -10,7 +10,7 @@ export default function HomeScreen() {
   const { data, isLoading, isError } = usePostsQuery();
   const onViewRef = useRef(({ viewableItems }: any) => {
     if (viewableItems.length > 0) {
-      setCurrentVisible(viewableItems[0].item);
+      setCurrentVisible(viewableItems[0].item?._id);
     }
   });
 

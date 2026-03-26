@@ -1,5 +1,5 @@
-import { StyleSheet, View } from "react-native";
 import { ResizeMode, Video } from "expo-av";
+import { StyleSheet } from "react-native";
 
 type Props = {
   uri: string;
@@ -14,21 +14,15 @@ export default function VideoCustom({
   loop = true,
   style,
 }: Props) {
-  
-
   return (
-    <View style={styles.container}>
-      <Video
-        source={{ uri: uri}}
-        style={{...styles.video,...style}}
-        resizeMode={ResizeMode.CONTAIN}
-        shouldPlay={autoPlay}
-        isLooping={loop}
-        useNativeControls={false}
-        pointerEvents="none"
-        onError={(e) => console.log("Video error", e)}
-      />
-    </View>
+    <Video
+      source={{ uri: uri }}
+      style={[styles.video, style]}
+      useNativeControls
+      resizeMode={ResizeMode.CONTAIN}
+      isLooping={false}
+      shouldPlay={false}
+    />
   );
 }
 
@@ -36,7 +30,7 @@ const styles = StyleSheet.create({
   video: {
     width: "100%",
     height: "100%",
-    borderRadius: 8,
+    backgroundColor: "#000",
   },
   container: { flex: 1, justifyContent: "center" },
 });

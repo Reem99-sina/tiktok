@@ -103,8 +103,9 @@ export default function PreviewScreen() {
               marginVertical: 20,
             }}
             useNativeControls
-            resizeMode={ResizeMode.COVER}
-            isLooping
+            resizeMode={ResizeMode.CONTAIN}
+            isLooping={false}
+            shouldPlay={false}
           />
         )}
 

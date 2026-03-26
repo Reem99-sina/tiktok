@@ -19,7 +19,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": []
     },
     "web": {
       "output": "static",
@@ -40,8 +41,8 @@
         }
       ],
       "expo-secure-store",
-      "react-native-video"
-      
+      "react-native-video",
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true,
@@ -53,7 +54,12 @@
       "backgroundColor": "#000000"
     },
     "extra": {
-      "apiUrl": "https://tiktokback-production-0409.up.railway.app/"
-    }
+      "apiUrl": "https://tiktokback-production-0409.up.railway.app/",
+      "router": {},
+      "eas": {
+        "projectId": "8d3ef952-6356-411b-85e3-50007a2a4182"
+      }
+    },
+    "owner": "reemsina"
   }
 }

@@ -25,9 +25,9 @@ export function AvatarPost({
   };
   const checkIfFollowing = () => {
     if (!userCurrent || !userData?.user) return false;
-    return userData?.user?.followers
+    return userData?.user?.following
       ?.map((ele: User) => ele?._id)
-      .includes(user._id);
+      .includes(user?._id);
   };
 
   return (
@@ -45,16 +45,16 @@ export function AvatarPost({
         <View>
           <TouchableOpacity style={styles.userRow}>
             <Image
-              source={{ uri: apiUrl + user.avatar }}
+              source={{ uri: apiUrl + user?.avatar }}
               style={styles.avatar}
             />
 
-            {isAbsolute && <Text style={styles.username}>{user.username}</Text>}
+            {isAbsolute && <Text style={styles.username}>{user?.username}</Text>}
           </TouchableOpacity>
           <Text style={styles.caption}>{caption}</Text>
         </View>
 
-        {userCurrent?._id !== user?._id && checkIfFollowing() && (
+        {userCurrent?._id !== user?._id && !checkIfFollowing() && (
           <TouchableOpacity
             onPress={handleFollowSubmit}
             style={styles.followButton}

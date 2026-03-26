@@ -1,8 +1,6 @@
 import { useAuthStore } from "@/store/useAuthStore";
-import { ThemedView } from "../themed-view";
 import {
   Dimensions,
-  FlatList,
   Image,
   StyleSheet,
   Text,
@@ -10,10 +8,12 @@ import {
   View,
 } from "react-native";
 import { NotFound } from "../post/notfound";
-import { apiUrl } from "@/action/user";
+import { apiUrl, useGetUser } from "@/action/user";
 import { usePostsByUserQuery } from "@/action/posts";
 import {  useMemo } from "react";
 import VideoCustom from "../ui/videoCustom";
+import { AnimatedFlashList } from "@shopify/flash-list";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -21,29 +21,31 @@ const screenWidth = Dimensions.get("window").width;
 const itemSize = screenWidth / 3;
 
 export function UserProfile() {
-  const { user, logout } = useAuthStore((state) => state);
-  const { data: postsData } = usePostsByUserQuery({ id: user?._id });
+  const {  logout,token } = useAuthStore((state) => state);
+  const {data:userData}=useGetUser(token)
+  const { data: postsData } = usePostsByUserQuery({ id: userData?.user?._id });
 
   const posts = useMemo(() => {
     return postsData?.data?.data || [];
   }, [postsData]);
-  if (!user) {
+  if (!userData?.user) {
     return <NotFound message="user not found" />;
   }
+  console.log(posts,'posts in user profile') // ✅ debug log
 
   return (
-    <ThemedView style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Avatar */}
       <View style={styles.avatarContainer}>
-        {user.avatar ? (
-          <Image source={{ uri: apiUrl + user.avatar }} style={styles.avatar} />
+        {userData?.user?.avatar ? (
+          <Image source={{ uri: apiUrl + userData.user.avatar }} style={styles.avatar} />
         ) : (
           <Text style={styles.noAvatar}>No Avatar</Text>
         )}
       </View>
 
       {/* Username */}
-      <Text style={styles.username}>{user.username}</Text>
+      <Text style={styles.username}>{userData?.user?.username}</Text>
 
       {/* Stats */}
       <View style={styles.statsContainer}>
@@ -55,32 +57,34 @@ export function UserProfile() {
         </View>
 
         <View style={styles.statItem}>
-          <Text style={styles.statNumber}>{user?.followers?.length || 0}</Text>
+          <Text style={styles.statNumber}>{userData?.user?.followers?.length || 0}</Text>
           <Text style={styles.statLabel}>Followers</Text>
         </View>
 
         <View style={styles.statItem}>
-          <Text style={styles.statNumber}>{user?.following?.length || 0}</Text>
+          <Text style={styles.statNumber}>{userData?.user?.following?.length || 0}</Text>
           <Text style={styles.statLabel}>Following</Text>
         </View>
       </View>
       
-      <FlatList
+       <AnimatedFlashList
         data={posts}
         keyExtractor={(item) => item._id}
         numColumns={3}
-        renderItem={({ item }) => (
-          <View style={{ width: itemSize, height: itemSize }}>
-            <VideoCustom uri={apiUrl + item.videoUrl}  />
+        renderItem={({ item }) => {
+          console.log(item?.videoUrl,'rendering post item') // ✅ debug log
+          return(
+          <View style={{ width: itemSize, height: itemSize, margin: 2 }}>
+            <VideoCustom uri={apiUrl + item.videoUrl} autoPlay={false} />
           </View>
-        )}
+        )}}
       />
 
       {/* Logout Button */}
       <TouchableOpacity onPress={logout} style={styles.logoutButton}>
         <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
-    </ThemedView>
+    </SafeAreaView>
   );
 }
 
