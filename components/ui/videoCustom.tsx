@@ -1,5 +1,6 @@
-import { ResizeMode, Video } from "expo-av";
-import { StyleSheet } from "react-native";
+
+import { useVideoPlayer, VideoView } from "expo-video";
+import { StyleSheet, View } from "react-native";
 
 type Props = {
   uri: string;
@@ -7,30 +8,41 @@ type Props = {
   loop?: boolean;
   style?: any;
 };
+export default function VideoScreen({ uri ,autoPlay,style}:Props) {
+  const player = useVideoPlayer(uri, (player) => {
+    player.loop = true;
+    if(autoPlay) {
+      player.play();
+    }
+  });
 
-export default function VideoCustom({
-  uri,
-  autoPlay = true,
-  loop = true,
-  style,
-}: Props) {
+
   return (
-    <Video
-      source={{ uri: uri }}
-      style={[styles.video, style]}
-      useNativeControls
-      resizeMode={ResizeMode.CONTAIN}
-      isLooping={false}
-      shouldPlay={false}
-    />
+    <View >
+      <VideoView
+        style={[styles.video,style]}
+        player={player}
+        nativeControls={false}
+        // allowsFullscreen
+        // allowsPictureInPicture
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  video: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#000",
+  contentContainer: {
+    flex: 1,
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 50,
   },
-  container: { flex: 1, justifyContent: "center" },
+  video: {
+    width: '100%',
+    height: '100%',
+  },
+  controlsContainer: {
+    padding: 10,
+  },
 });

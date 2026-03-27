@@ -1,6 +1,7 @@
 import { useAuthStore } from "@/store/useAuthStore";
 import {
   Dimensions,
+  FlatList,
   Image,
   StyleSheet,
   Text,
@@ -10,19 +11,18 @@ import {
 import { NotFound } from "../post/notfound";
 import { apiUrl, useGetUser } from "@/action/user";
 import { usePostsByUserQuery } from "@/action/posts";
-import {  useMemo } from "react";
-import VideoCustom from "../ui/videoCustom";
-import { AnimatedFlashList } from "@shopify/flash-list";
+import { useMemo } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import VideoScreen from "../ui/VideoCustom";
+
 
 const screenWidth = Dimensions.get("window").width;
-
 
 const itemSize = screenWidth / 3;
 
 export function UserProfile() {
-  const {  logout,token } = useAuthStore((state) => state);
-  const {data:userData}=useGetUser(token)
+  const { logout, token } = useAuthStore((state) => state);
+  const { data: userData } = useGetUser(token);
   const { data: postsData } = usePostsByUserQuery({ id: userData?.user?._id });
 
   const posts = useMemo(() => {
@@ -31,14 +31,17 @@ export function UserProfile() {
   if (!userData?.user) {
     return <NotFound message="user not found" />;
   }
-  console.log(posts,'posts in user profile') // ✅ debug log
+
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Avatar */}
       <View style={styles.avatarContainer}>
         {userData?.user?.avatar ? (
-          <Image source={{ uri: apiUrl + userData.user.avatar }} style={styles.avatar} />
+          <Image
+            source={{ uri: apiUrl + userData.user.avatar }}
+            style={styles.avatar}
+          />
         ) : (
           <Text style={styles.noAvatar}>No Avatar</Text>
         )}
@@ -57,27 +60,31 @@ export function UserProfile() {
         </View>
 
         <View style={styles.statItem}>
-          <Text style={styles.statNumber}>{userData?.user?.followers?.length || 0}</Text>
+          <Text style={styles.statNumber}>
+            {userData?.user?.followers?.length || 0}
+          </Text>
           <Text style={styles.statLabel}>Followers</Text>
         </View>
 
         <View style={styles.statItem}>
-          <Text style={styles.statNumber}>{userData?.user?.following?.length || 0}</Text>
+          <Text style={styles.statNumber}>
+            {userData?.user?.following?.length || 0}
+          </Text>
           <Text style={styles.statLabel}>Following</Text>
         </View>
       </View>
-      
-       <AnimatedFlashList
+
+      <FlatList
         data={posts}
         keyExtractor={(item) => item._id}
         numColumns={3}
         renderItem={({ item }) => {
-          console.log(item?.videoUrl,'rendering post item') // ✅ debug log
-          return(
-          <View style={{ width: itemSize, height: itemSize, margin: 2 }}>
-            <VideoCustom uri={apiUrl + item.videoUrl} autoPlay={false} />
-          </View>
-        )}}
+          return (
+            <View style={{ width: itemSize, height: itemSize, margin: 2 }}>
+              <VideoScreen uri={apiUrl + item.videoUrl} autoPlay={false} />
+            </View>
+          );
+        }}
       />
 
       {/* Logout Button */}
@@ -101,6 +108,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginTop: 10,
     marginBottom: 20,
+    color: "#fff",
   },
 
   avatarContainer: {
@@ -138,11 +146,13 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 18,
     fontWeight: "bold",
+    color: "#fff",
+
   },
 
   statLabel: {
     fontSize: 12,
-    color: "#666",
+    color: "#fff",
     marginTop: 4,
   },
 

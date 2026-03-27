@@ -6,6 +6,15 @@ import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import "react-native-reanimated";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { DarkTheme, ThemeProvider } from "@react-navigation/native";
+
+const myTheme={
+  ...DarkTheme,
+  colors:{
+    ...DarkTheme.colors,
+    primary:"#fff",
+  }
+}
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient({
@@ -62,9 +71,11 @@ export default function RootLayout() {
   }
   return (
     //  <AuthProvider>
+    <ThemeProvider value={myTheme}>
     <QueryClientProvider client={queryClient}>
       <Stack screenOptions={{ headerShown: false }} />
     </QueryClientProvider>
+    </ThemeProvider>
     // </AuthProvider>
   );
 }

@@ -26,6 +26,14 @@ export default function TabLayout() {
           ),
         }}
       />
+       <Tabs.Screen
+        name="followers"
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="users" color={color} size={size} />
+          ),
+        }}
+      />
 
       <Tabs.Screen
         name="add"

@@ -49,9 +49,11 @@ export function AvatarPost({
               style={styles.avatar}
             />
 
-            {isAbsolute && <Text style={styles.username}>{user?.username}</Text>}
+            {user?.username && (
+              <Text style={styles.username}>{user?.username}</Text>
+            )}
           </TouchableOpacity>
-          <Text style={styles.caption}>{caption}</Text>
+          {caption && <Text style={styles.caption}>{caption}</Text>}
         </View>
 
         {userCurrent?._id !== user?._id && !checkIfFollowing() && (

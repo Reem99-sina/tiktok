@@ -81,7 +81,7 @@ export default function PreviewScreen() {
 
             justifyContent: "flex-start",
             padding: 10,
-            borderRadius: 10,
+            borderRadius: 10
           }}
           onPress={() => {
             if (router.canGoBack()) {
@@ -89,7 +89,7 @@ export default function PreviewScreen() {
             }
           }}
         >
-          <AntDesign name="arrow-left" size={24} color="black" />
+          <AntDesign name="arrow-left" size={24} color="white" />
 
           <Text>Back</Text>
         </Pressable>
@@ -124,7 +124,7 @@ export default function PreviewScreen() {
         />
 
         <TouchableOpacity
-          style={{ backgroundColor: "black", padding: 20, borderRadius: 5 }}
+          style={{ backgroundColor: "red", padding: 20, borderRadius: 5 }}
           onPress={handleSubmit(sendPostList)}
           disabled={loading}
         >

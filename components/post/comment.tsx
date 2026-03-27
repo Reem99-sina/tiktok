@@ -22,7 +22,7 @@ export function CommentPost({ post }: commentProps) {
   const [commentText, setCommentText] = useState("");
   const { token } = useAuthStore((state) => state);
   const { mutateAsync } = useAddComment();
-console.log(comments,'comments in comment post') // ✅ debug log
+
   const handleCommentSubmit = async () => {
     if (commentText.trim() !== "" && token) {
       const result = await handleApiRequest(() =>

@@ -6,8 +6,7 @@ import { Post } from "@/types/post";
 import { handleApiRequest } from "@/utils/apiHandler";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Entypo from "@expo/vector-icons/Entypo";
-import { ResizeMode, Video } from "expo-av";
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import {
   Dimensions,
   Modal,
@@ -21,6 +20,8 @@ import { AvatarPost } from "./post/avatar";
 import { CommentPost } from "./post/comment";
 import { NotFound } from "./post/notfound";
 import { Loading } from "./post/loading";
+import VideoScreen from "./ui/VideoCustom";
+
 
 type VideoItemProps = {
   post: Post;
@@ -37,7 +38,6 @@ export default function VideoItem({ post, isVisible }: VideoItemProps) {
   const { mutateAsync } = useAddLike();
   const { data, isLoading, isError } = usePostsByidQuery({ id: post?._id });
   const postById = data?.data?.data;
-
 
   // Handle loading state
   if (isLoading) {
@@ -61,14 +61,13 @@ export default function VideoItem({ post, isVisible }: VideoItemProps) {
   };
 
   const handleCommentOpen = () => {
-   
     setModalVisible(true);
   };
 
   return (
     <View style={styles.container}>
       {/* Video */}
-      <Video
+      {/* <Video
         source={{ uri: apiUrl + postById?.videoUrl }}
         style={styles.video}
         resizeMode={ResizeMode.CONTAIN}
@@ -76,7 +75,13 @@ export default function VideoItem({ post, isVisible }: VideoItemProps) {
         isLooping
         useNativeControls={false}
         pointerEvents="none"
-         onError={(e) => console.log("Video error", e)}
+        onError={(e) => console.log("Video error", e)}
+      /> */}
+      <VideoScreen
+        uri={apiUrl + postById?.videoUrl}
+        autoPlay={isVisible}
+        style={styles.video}
+        loop={true}
       />
 
       {/* Overlay Buttons */}
@@ -97,8 +102,8 @@ export default function VideoItem({ post, isVisible }: VideoItemProps) {
       </View>
 
       {/* Avatar */}
-      <View style={{ }}>
-        <AvatarPost user={postById?.userId}caption={postById?.caption} />
+      <View style={{}}>
+        <AvatarPost user={postById?.userId} caption={postById?.caption} />
       </View>
       {/* Modal */}
       <Modal
